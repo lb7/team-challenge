@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 /**
  * The overall form component
@@ -189,18 +190,25 @@ class BirthdayInput extends React.Component {
             return {missing:true, isValid:false}
         }
 
-        //check date validity
-        var timestamp = Date.parse(currentValue); //use built-in Date type
-        if(isNaN(timestamp)) { //it not a valid stamp
-            return {notDate:true, isValid:false};
+        // var timestamp = Date.parse(currentValue); //use built-in Date type
+        // if(isNaN(timestamp)) { //it not a valid stamp
+        //     return {notDate:true, isValid:false};
+        // }
+        
+
+        //check date validity, valid formmat: 'YYYY-MM-DD'
+        var m = moment(currentValue, moment.ISO_8601);
+        if(!m.isValid()) {
+            return {notDate: true, isValid: false};
         }
+        
 
         //check age range
+        var timestamp = Date.parse(currentValue);
         var d = new Date(); //today
-        d.setYear(d.getFullYear() - 13); //subtract 13 from the year
-        var minTimestamp = d.getTime();
-        if(timestamp < minTimestamp){
-            return {notOldEnough:true, isValid:false}
+        var minTimestamp = d.setFullYear(d.getFullYear() - 13); //subtract 13 from the year
+        if(timestamp > minTimestamp){
+            return {notOldEnough:true, isValid:false};
         }
 
         return {isValid: true}; //no errors
@@ -237,7 +245,7 @@ class BirthdayInput extends React.Component {
         <p className="help-block error-missing">we need to know your birthdate</p>
         }
         {errors.notDate &&
-        <p className="help-block error-invalid">that isn't a valid date</p>
+        <p className="help-block error-invalid">that isn't a valid date, valid format: YYYY-MM-DD</p>
         }
         {errors.notOldEnough &&
         <p className="help-block error-not-old">sorry, you must be at least 13 to sign up</p>
