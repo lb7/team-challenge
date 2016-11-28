@@ -4,16 +4,21 @@ import moment from 'moment';
 /**
  * The overall form component
  */
-class SignUpForm extends React.Component {
-    constructor(props) {
+
+export class SignUpForm extends React.Component {
+    constructor(props){
         super(props);
-        this.state = { //track values and overall validity of each field
-            email: { value: '', valid: false },
-            name: { value: '', valid: false },
-            dob: { value: '', valid: false },
-            password: { value: '', valid: false },
-            passwordConf: { value: '', valid: false }
+
+        //hold the blank state in order to use it to reset the fields later.
+        this.blankState = { //track values and overall validity of each field
+            email:{value:'',valid:false},
+            name:{value:'',valid:false},
+            dob:{value:'',valid:false},
+            password:{value:'',valid:false},
+            passwordConf:{value:'',valid:false}
         };
+
+        this.state = this.blankState;
 
         this.updateState = this.updateState.bind(this); //bind for scope
     }
@@ -26,8 +31,7 @@ class SignUpForm extends React.Component {
     //callback for the reset button
     handleReset(event) {
         console.log('Reset!');
-        var emptyState = {};
-        this.setState(emptyState);
+        this.setState(this.blankState);
     }
 
     //callback for the submit button
@@ -39,19 +43,19 @@ class SignUpForm extends React.Component {
 
     render() {
         //if all fields are valid, button should be enabled
-        var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.isValid && this.state.password.valid);
+        var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.isValid && this.state.password.valid && this.state.passwordConf.valid);
 
         return (
             <form name="signupForm" onSubmit={(e) => this.handleSubmit(e)}>
 
-                <EmailInput value={this.state.email.value} updateParent={this.updateState} />
-
-                <RequiredInput
-                    id="name" field="name" type="text"
-                    label="Name" placeholder="your name"
-                    errorMessage="we need to know your name"
-                    value={this.state.name.value}
-                    updateParent={this.updateState} />
+    <EmailInput value={this.state.email.value} updateParent={this.updateState} />
+  
+    <RequiredInput
+        id="name" field="name" type="text"
+        label="Name" placeholder="your name"
+        errorMessage="we need to know your name"
+        value={this.state.name.value}
+        updateParent={this.updateState} />
 
                 <BirthdayInput value={this.state.dob.value} updateParent={this.updateState} />
 
@@ -64,11 +68,11 @@ class SignUpForm extends React.Component {
 
                 <PasswordConfirmationInput value={this.state.passwordConf.value} password={this.state.password.value} updateParent={this.updateState} />
 
-                {/* Submit Buttons */}
-                <div className="form-group">
-                    <button id="resetButton" type="reset" className="btn btn-default" onClick={(e) => this.handleReset(e)}>Reset</button> {' ' /*space*/}
-                    <button id="submitButton" type="submit" className="btn btn-primary" disabled={buttonEnabled}>Sign Me Up!</button>
-                </div>
+        {/* Submit Buttons */}
+    <div className="form-group">
+            <button id="resetButton" type="reset" className="btn btn-default" onClick={(e)=>this.handleReset(e)}>Reset</button> {' ' /*space*/}
+        <button id="submitButton" type="submit" className="btn btn-primary" disabled={!buttonEnabled}>Sign Me Up!</button>
+        </div>
 
             </form>
         );
@@ -84,7 +88,6 @@ class EmailInput extends React.Component {
         if (currentValue === '') { //check presence
             return { missing: true, isValid: false }
         }
-
         //check email validity
         //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
         var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
@@ -117,19 +120,19 @@ class EmailInput extends React.Component {
 
         return (
             <div className={inputStyle}>
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" className="form-control" placeholder="email address"
-                    value={this.props.value}
-                    onChange={(e) => this.handleChange(e)}
-                    />
-                {errors.missing &&
-                    <p className="help-block error-missing">we need to know your email address</p>
-                }
-                {errors.invalid &&
-                    <p className="help-block error-invalid">this is not a valid email address</p>
-                }
-            </div>
-        );
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" className="form-control" placeholder="email address"
+        value={this.props.value}
+        onChange={(e) => this.handleChange(e)}
+    />
+        {errors.missing &&
+        <p className="help-block error-missing">we need to know your email address</p>
+        }
+        {errors.invalidEmail &&
+        <p className="help-block error-invalid">this is not a valid email address</p>
+        }
+    </div>
+    );
     }
 }
 
@@ -142,8 +145,7 @@ class RequiredInput extends React.Component {
         if (currentValue === '') { //check presence
             return { required: true, isValid: false };
         }
-
-        return { isValid: true }; //no errors
+        return {isValid: true}; //no errors
     }
 
     handleChange(event) {
@@ -167,16 +169,16 @@ class RequiredInput extends React.Component {
 
         return (
             <div className={inputStyle}>
-                <label htmlFor={this.props.field}>{this.props.label}</label>
-                <input type={this.props.type} id={this.props.id} name={this.props.field} className="form-control" placeholder={this.props.placeholder}
-                    value={this.props.value}
-                    onChange={(e) => this.handleChange(e)}
-                    />
-                {errors.required &&
-                    <p className="help-block error-missing">{this.props.errorMessage}</p>
-                }
-            </div>
-        );
+            <label htmlFor={this.props.field}>{this.props.label}</label>
+        <input type={this.props.type} id={this.props.id} name={this.props.field}className="form-control" placeholder={this.props.placeholder}
+        value={this.props.value}
+        onChange={(e) => this.handleChange(e)}
+    />
+        {errors.required &&
+        <p className="help-block error-missing">{this.props.errorMessage}</p>
+        }
+    </div>
+    );
     }
 }
 

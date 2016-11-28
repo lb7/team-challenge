@@ -1,51 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import {BirthdayInput, RequiredInput, PasswordConfirmationInput} from './TeamSignUp';
+import {shallow, mount} from 'enzyme';
+import {SignUpForm} from './TeamSignUp';
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+    const div = document.createElement('div');
+    ReactDOM.render(<App />, div);
 });
 
-describe('<BirthdayInput />', () => {
-  let wrapper;
 
-  beforeEach(() => {
-    wrapper = shallow(<BirthdayInput />);
-  });
+describe('Reset Button', () => {
+    it('should clear the form when the button is clicked', () => {
+        const wrapper = mount(<SignUpForm/>);
 
-  it('should be a required field', () => {
-    const input = wrapper.find('input');
-    input.simulate('change', {target:{value:''}});
-    expect(wrapper.find('p .help-block')).hasClass('error-missing');
-  });
+        console.log(wrapper.debug());
+        const blankState = {
+            email:{value:'',valid:false},
+            name:{value:'',valid:false},
+            dob:{value:'',valid:false},
+            password:{value:'',valid:false},
+            passwordConf:{value:'',valid:false}
+        };
 
-  // it('should have a valid ISO date format', () => {
+        const filledInState = {
+            email:{value:'text'},
+            name:{value:'text'},
+            dob:{value:'text'},
+            password:{value:'text'},
+            passwordConf:{value:'text'}
+        };
 
-  // });
+        wrapper.setState(filledInState);
 
-  // it('should be at least 13 years of age', () => {
+        //ensure the form is filled in
+        expect(wrapper.state()).toEqual(filledInState);
 
-  // });
+        wrapper.find('#resetButton').simulate('click');
 
+        //make sure state is blank after click.
+        expect(wrapper.state()).toEqual(blankState);
+
+        //Make sure the actual input on the page is blank.
+        wrapper.find('input').forEach((node) => {
+            expect(node.props().value).toBe('');
+        });
+    });
 });
-
-// describe('<PasswordConfirmationInput />', () => {
-  // let wrapper;
-
-  // beforeEach(() => {
-  //   wrapper = shallow(<PasswordConfirmationInput />);
-  // })
-//   it('should be a required field', () => {
-
-//   });
-
-//   it('should match password', () => {
-
-//   });
-// });
-
 
