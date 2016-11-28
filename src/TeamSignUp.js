@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * The overall form component
  */
-class SignUpForm extends React.Component {
+export class SignUpForm extends React.Component {
     constructor(props){
         super(props);
 
