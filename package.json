@@ -1,5 +1,6 @@
 {
   "name": "team-challenge",
+  "homepage": "https://lb7.github.io/team-challenge/build",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
