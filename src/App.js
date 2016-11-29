@@ -11,13 +11,14 @@ class App extends Component {
 
     submitCallback(event) {
         if (event.email.valid && event.name.valid && event.dob.valid && event.password.valid &&
-            event.passwordConf.valid)
+            event.passwordConf.valid) {
             this.setState({ formSubmitted: true })
+        }
     }
 
     render() {
         if (this.state.formSubmitted) {
-            var message = <div className="alert alert-success" role="alert"><p>You've Successfully Submitted the Form</p></div>
+            var message = <div className="alert alert-success" role="alert"><p>Form Submitted</p></div>
         } else {
             var message = null;
         }
@@ -27,7 +28,6 @@ class App extends Component {
                 <h1>Sign Up</h1>
                 {message}
                 <SignUpForm submitCallback={this.submitCallback} />
-                
             </div>
         );
     }

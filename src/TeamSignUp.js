@@ -45,7 +45,7 @@ export class SignUpForm extends React.Component {
         //if all fields are valid, button should be enabled
         var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.valid && this.state.password.valid && this.state.passwordConf.valid);
         return (
-            <form name="signupForm" onSubmit={(e) => this.handleSubmit(e)}>
+            <form name="signupForm">
 
                 <EmailInput value={this.state.email.value} updateParent={this.updateState} />
 
@@ -70,7 +70,7 @@ export class SignUpForm extends React.Component {
                 {/* Submit Buttons */}
                 <div className="form-group">
                     <button id="resetButton" type="reset" className="btn btn-default" onClick={(e) => this.handleReset(e)}>Reset</button> {' ' /*space*/}
-                    <button id="submitButton" type="submit" className="btn btn-primary" disabled={!buttonEnabled}>Sign Me Up!</button>
+                    <button id="submitButton" type="submit" className="btn btn-primary" disabled={!buttonEnabled} onClick={(e) => this.handleSubmit(e)}>Sign Me Up!</button>
                 </div>
 
             </form>
