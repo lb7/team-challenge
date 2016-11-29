@@ -176,10 +176,19 @@ describe('Submit Button', () => {
     it('should display a alert when the form is submitted', () => {
         const wrapper = mount(<App />);
 
-        const validState = { formSubmitted: true }
-        wrapper.setState(validState);
+        const email= wrapper.find('#email');
+        const name= wrapper.find('#name');
+        const dob= wrapper.find('#dob');
+        const password= wrapper.find('#password');
+        const passConf= wrapper.find('#passwordConf');
+        
+        email.simulate('change', {target:{value:'nate@gmail.com'}});
+        name.simulate('change', {target:{value:'Nate'}});
+        dob.simulate('change', {target:{value:'1986-12-16'}});
+        password.simulate('change', {target:{value:'1qaz'}});
+        passConf.simulate('change', {target:{value:'1qaz'}});
 
-        expect(wrapper.state()).toEqual(validState);
-        expect(wrapper.find('.alert').text()).toEqual("Form Submitted");
+        wrapper.find('#submitButton').simulate('click');
+        expect(wrapper.find('.alert').text()).toEqual("Form Submitted"); 
     });
 });
