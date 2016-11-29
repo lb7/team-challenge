@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import {shallow, mount} from 'enzyme';
-import {SignUpForm, BirthdayInput, RequiredInput, PasswordConfirmationInput} from './TeamSignUp';
+import {SignUpForm, BirthdayInput, RequiredInput, PasswordConfirmationInput, EmailInput} from './TeamSignUp';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
@@ -58,6 +58,21 @@ describe('<RequiredInput />', () => {
         //when there is an input
         wrapper.setProps({value: 'hello'});
         expect(wrapper.find('p .help-block .error-missing').length).toEqual(0);
+    });
+});
+
+describe('<EmailInput />', () => {
+    let wrapper;
+    wrapper = shallow(<EmailInput />);
+
+    it('should not be empty', () => {
+        // when field is empty, field is required
+        wrapper.setProps({value: ''});
+        expect(wrapper.find('p .help-block').hasClass('error-missing')).toBeTruthy();
+
+        //when there is an email input
+        wrapper.setProps({value: '2acom'});
+        expect(wrapper.find('p .help-block .error-invalid')).toBeTruthy();
     });
 });
 
