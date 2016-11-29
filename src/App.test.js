@@ -4,6 +4,7 @@ import App from './App';
 import {shallow, mount} from 'enzyme';
 import {SignUpForm, BirthdayInput, RequiredInput, PasswordConfirmationInput} from './TeamSignUp';
 
+
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App />, div);
@@ -85,23 +86,23 @@ describe('<PasswordConfirmationInput />', () => {
 
 describe('Reset Button', () => {
     it('should clear the form when the button is clicked', () => {
-        const wrapper = mount(<SignUpForm/>);
+        const wrapper = mount(<SignUpForm />);
 
         //console.log(wrapper.debug());
         const blankState = {
-            email:{value:'',valid:false},
-            name:{value:'',valid:false},
-            dob:{value:'',valid:false},
-            password:{value:'',valid:false},
-            passwordConf:{value:'',valid:false}
+            email: { value: '', valid: false },
+            name: { value: '', valid: false },
+            dob: { value: '', valid: false },
+            password: { value: '', valid: false },
+            passwordConf: { value: '', valid: false }
         };
 
         const filledInState = {
-            email:{value:'text'},
-            name:{value:'text'},
-            dob:{value:'text'},
-            password:{value:'text'},
-            passwordConf:{value:'text'}
+            email: { value: 'text' },
+            name: { value: 'text' },
+            dob: { value: 'text' },
+            password: { value: 'text' },
+            passwordConf: { value: 'text' }
         };
 
         wrapper.setState(filledInState);
@@ -120,4 +121,5 @@ describe('Reset Button', () => {
         });
     });
 });
+
 
