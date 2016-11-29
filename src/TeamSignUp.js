@@ -56,7 +56,7 @@ export class SignUpForm extends React.Component {
                     value={this.state.name.value}
                     updateParent={this.updateState} />
 
-                <BirthdayInput value={this.state.dob.value} updateParent={this.updateState} />
+                <BirthdayInput value={this.state.dob.value} updateParent={(e) => this.updateState(e)} />
 
                 <RequiredInput
                     id="password" field="password" type="password"
@@ -256,6 +256,9 @@ class BirthdayInput extends React.Component {
  */
 class PasswordConfirmationInput extends React.Component {
     validate(currentValue) {
+        if (currentValue === '') { // check presence
+            return {required: true, isValid: false};
+        }
 
         if (currentValue === '' || this.props.password === '') { //check both entries
             return { mismatched: true, isValid: false };
@@ -263,7 +266,7 @@ class PasswordConfirmationInput extends React.Component {
 
         if (this.props.password !== '') {
             if (currentValue !== this.props.password) {
-                return { mismatched: true, isValid: false };
+                return {mismatched: true, isValid: false}; 
             } else {
                 return { mismatched: false, isValid: true };
             }
@@ -299,6 +302,9 @@ class PasswordConfirmationInput extends React.Component {
                     value={this.props.value}
                     onChange={(e) => this.handleChange(e)}
                     />
+                {errors.required &&
+                    <p className="help-block error-missing">please re-enter your password</p>
+                }
                 {errors.mismatched &&
                     <p className="help-block error-mismatched">passwords don't match</p>
                 }
